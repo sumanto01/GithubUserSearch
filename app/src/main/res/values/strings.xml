@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">GithubUserSearch</string>
 
-    <string name="search_hint">search github users</string>
+    <string name="search_hint">search github user</string>
+    <string name="search">Search</string>
+    <string name="loading">Loading</string>
+    <string name="retry">Retry</string>
 </resources>

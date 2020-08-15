@@ -1,2 +1,3 @@
 # GithubUserSearch
-Test task for tiket
+Github User Finder Application
+data retrieved from api: https://developer.github.com/v3/

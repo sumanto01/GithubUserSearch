@@ -10,9 +10,9 @@ import com.sumanto.githubusersearch.data.repositories.GithubRepository
 class ViewModelFactory(private val repository: GithubRepository) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(SearchRepositoriesViewModel::class.java)) {
+        if (modelClass.isAssignableFrom(SearchUsersViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return SearchRepositoriesViewModel(repository) as T
+            return SearchUsersViewModel(repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

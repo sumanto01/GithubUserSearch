@@ -16,14 +16,14 @@ import kotlinx.coroutines.flow.StateFlow
  * ViewModel for the [SearchUsersActivity] screen.
  */
 @ExperimentalCoroutinesApi
-class SearchRepositoriesViewModel(private val repository: GithubRepository) : ViewModel() {
+class SearchUsersViewModel(private val repository: GithubRepository) : ViewModel() {
 
     private val _currentQuery = MutableStateFlow<String?>(null)
     private val currentQuery: StateFlow<String?> get() = _currentQuery
 
     private var currentSearchResult: Flow<PagingData<GithubUser>>? = null
 
-    fun searchRepo(queryString: String): Flow<PagingData<GithubUser>> {
+    fun searchUsers(queryString: String): Flow<PagingData<GithubUser>> {
         val lastResult = currentSearchResult
         if (queryString == currentQuery.value && lastResult != null) {
             return lastResult

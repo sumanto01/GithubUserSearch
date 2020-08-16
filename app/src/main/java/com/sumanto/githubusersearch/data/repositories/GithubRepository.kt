@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.Flow
 class GithubRepository(private val service: GithubService) {
 
     /**
-     * Search users whose names match the query, transform as a flow
+     * Search users based on query, transform as a flow
      * that will emit stream of data every time we get more data from the network.
      */
     fun getUserSearchResultStream(query: String): Flow<PagingData<GithubUser>> {

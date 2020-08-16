@@ -33,7 +33,7 @@ class UserViewHolder(view: View) : RecyclerView.ViewHolder(view) {
                 ).show()
             }
             setOnLongClickListener {
-                user?.url?.let { url ->
+                user?.htmlUrl?.let { url ->
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                     view.context.startActivity(intent)
                 }

@@ -9,16 +9,16 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.viewModels
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.sumanto.githubusersearch.databinding.ActivitySearchBinding
-import com.sumanto.githubusersearch.di.AppInjection
 import com.sumanto.githubusersearch.view.adapters.UsersLoadStateAdapter
 import com.sumanto.githubusersearch.view.adapters.UsersAdapter
 import com.sumanto.githubusersearch.viewmodel.SearchUsersViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
@@ -27,10 +27,11 @@ import kotlinx.coroutines.launch
 /**
  * Created by sumanto on 8/15/20.
  */
+@AndroidEntryPoint
 class SearchUsersActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySearchBinding
-    private lateinit var viewModel: SearchUsersViewModel
+    private val viewModel: SearchUsersViewModel by viewModels()
 
     private val adapter = UsersAdapter()
 
@@ -43,8 +44,6 @@ class SearchUsersActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        viewModel = ViewModelProvider(this, AppInjection.provideViewModelFactory())
-            .get(SearchUsersViewModel::class.java)
         val query = savedInstanceState?.getString(LAST_SEARCH_QUERY) ?: DEFAULT_QUERY
         initViews(query)
     }

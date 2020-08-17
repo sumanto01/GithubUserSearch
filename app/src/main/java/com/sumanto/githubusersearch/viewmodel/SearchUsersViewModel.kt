@@ -1,5 +1,6 @@
 package com.sumanto.githubusersearch.viewmodel
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -16,7 +17,9 @@ import kotlinx.coroutines.flow.StateFlow
  * ViewModel for the [SearchUsersActivity] screen.
  */
 @ExperimentalCoroutinesApi
-class SearchUsersViewModel(private val repository: GithubRepository) : ViewModel() {
+class SearchUsersViewModel
+@ViewModelInject
+constructor(private val repository: GithubRepository) : ViewModel() {
 
     private val _currentQuery = MutableStateFlow<String?>(null)
     private val currentQuery: StateFlow<String?> get() = _currentQuery

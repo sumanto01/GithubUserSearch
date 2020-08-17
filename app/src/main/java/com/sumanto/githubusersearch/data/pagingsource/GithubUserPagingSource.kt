@@ -5,11 +5,12 @@ import com.sumanto.githubusersearch.data.model.GithubUser
 import com.sumanto.githubusersearch.data.network.GithubService
 import retrofit2.HttpException
 import java.io.IOException
+import javax.inject.Inject
 
 /**
  * Created by sumanto on 8/16/20.
  */
-class GithubUserPagingSource (
+class GithubUserPagingSource @Inject constructor(
     private val service: GithubService,
     private val query: String
 ) : PagingSource<Int, GithubUser>() {

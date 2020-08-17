@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GithubUserSearch</string>
+    <string name="app_name">GithubUserFinder</string>
 
     <string name="search_hint">search github user</string>
     <string name="search">Search</string>

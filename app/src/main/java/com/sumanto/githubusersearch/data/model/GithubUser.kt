@@ -1,11 +1,15 @@
 package com.sumanto.githubusersearch.data.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 /**
  * Created by sumanto on 8/16/20.
  */
+@Entity( tableName = "users")
 data class GithubUser(
+    @PrimaryKey
     @SerializedName("id")
     var id: Long,
     @SerializedName("login")
@@ -29,5 +33,8 @@ data class GithubUser(
     @SerializedName("site_admin")
     var siteAdmin: Boolean?,
     @SerializedName("score")
-    var score: Double?
+    var score: Double?,
+
+    @SerializedName("response_index")
+    var responseIndex: Int?
 )

@@ -75,6 +75,12 @@ dependencies {
     def pagingVersion = '3.0.0-alpha03'
     implementation "androidx.paging:paging-runtime:$pagingVersion"
 
+    // Room
+    def roomVersion = '2.3.0-alpha02'
+    implementation "androidx.room:room-runtime:$roomVersion"
+    implementation "androidx.room:room-ktx:$roomVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
+
     // Retrofit
     def retrofitVersion = "2.9.0"
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"

@@ -17,4 +17,4 @@ Tests:
 - Unit Tests
 - Intrumentated Tests
 
-![Screenshot](screenshoots.jpg)
+![Screenshot](screenshots.jpg)

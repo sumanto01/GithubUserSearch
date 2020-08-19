@@ -17,4 +17,9 @@ Tests:
 - Unit Tests
 - Intrumentated Tests
 
+Screenshots:
 ![Screenshot](screenshots.jpg)
+
+Test Result:
+![Screenshot](unit_test_result.jpg)
+![Screenshot](instrumented_test_result.jpg)

@@ -24,11 +24,11 @@ constructor(private val repository: GithubRepository) : ViewModel() {
     private val _currentQuery = MutableStateFlow<String?>(null)
     private val currentQuery: StateFlow<String?> get() = _currentQuery
 
-    private var currentSearchResult: Flow<PagingData<GithubUser>>? = null
+    var currentSearchResult: Flow<PagingData<GithubUser>>? = null
 
     fun searchUsers(queryString: String): Flow<PagingData<GithubUser>> {
         val lastResult = currentSearchResult
-        if (queryString == currentQuery.value && lastResult != null) {
+        if (queryString == lastQueryValue() && lastResult != null) {
             return lastResult
         }
         _currentQuery.value = queryString

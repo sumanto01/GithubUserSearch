@@ -16,20 +16,27 @@ class GithubUserPagingSource @Inject constructor(
 ) : PagingSource<Int, GithubUser>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, GithubUser> {
         val page = params.key ?: START_PAGE_INDEX
-        val apiQuery = query
         return try {
-            val response = service.searchUsers(apiQuery, page, params.loadSize)
-            val repos = response.items
-            LoadResult.Page(
-                data = repos,
-                prevKey = if (page == START_PAGE_INDEX) null else page - 1,
-                nextKey = if (repos.isEmpty()) null else page + 1
-            )
+            loadPage(query, page, params.loadSize)
         } catch (exception: IOException) {
             LoadResult.Error(exception)
         } catch (exception: HttpException) {
             LoadResult.Error(exception)
         }
+    }
+
+    suspend fun loadPage(
+        apiQuery: String,
+        page: Int,
+        loadSize: Int
+    ): LoadResult.Page<Int, GithubUser> {
+        val response = service.searchUsers(apiQuery, page, loadSize)
+        val users = response.items
+        return LoadResult.Page(
+            data = users,
+            prevKey = if (page == START_PAGE_INDEX) null else page - 1,
+            nextKey = if (users.isEmpty()) null else page + 1
+        )
     }
 }
 

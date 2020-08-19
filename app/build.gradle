@@ -65,6 +65,7 @@ dependencies {
     def coroutinesVersion = '1.3.8'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
 
     // AAC
     def lifecycleVersion = '2.2.0'
@@ -72,7 +73,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
-    def pagingVersion = '3.0.0-alpha03'
+    def pagingVersion = '3.0.0-alpha04'
     implementation "androidx.paging:paging-runtime:$pagingVersion"
 
     // Retrofit
@@ -88,6 +89,15 @@ dependencies {
 
     // test
     testImplementation 'junit:junit:4.12'
+    def mockk_version = '1.9.3'
+    testImplementation "io.mockk:mockk:$mockk_version"
+    def elmyr_version = '1.0.0'
+    testImplementation "com.github.xgouchet.Elmyr:junit4:$elmyr_version"
+
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
+
+    def hamkrest_version = '1.7.0.0'
+    testImplementation "com.natpryce:hamkrest:$hamkrest_version"
 }

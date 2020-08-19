@@ -1,7 +1,6 @@
 package com.sumanto.githubusersearch.view.activities
 
 import android.app.Activity
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,16 +9,16 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.sumanto.githubusersearch.databinding.ActivitySearchBinding
-import com.sumanto.githubusersearch.view.adapters.UsersLoadStateAdapter
 import com.sumanto.githubusersearch.view.adapters.UsersAdapter
+import com.sumanto.githubusersearch.view.adapters.UsersLoadStateAdapter
 import com.sumanto.githubusersearch.viewmodel.SearchUsersViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -115,7 +114,6 @@ class SearchUsersActivity : AppCompatActivity() {
     }
 
 
-    @OptIn(InternalCoroutinesApi::class)
     private fun initAdapter() {
         binding.list.adapter = adapter.withLoadStateHeaderAndFooter(
             header = UsersLoadStateAdapter { adapter.retry() },
@@ -126,6 +124,7 @@ class SearchUsersActivity : AppCompatActivity() {
             binding.list.isVisible = loadState.source.refresh is LoadState.NotLoading
             binding.swipeRefresh.isRefreshing = loadState.source.refresh is LoadState.Loading
             binding.retryButton.isVisible = loadState.source.refresh is LoadState.Error
+            binding.errorTextView.isVisible = loadState.source.refresh is LoadState.Error
         }
     }
 

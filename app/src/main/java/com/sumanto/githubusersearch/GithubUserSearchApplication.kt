@@ -7,10 +7,4 @@ import dagger.hilt.android.HiltAndroidApp
  * Created by sumanto on 8/17/20.
  */
 @HiltAndroidApp
-class GithubUserSearchApplication : Application() {
-
-    override fun onCreate() {
-        super.onCreate()
-    }
-
-}
+class GithubUserSearchApplication : Application()

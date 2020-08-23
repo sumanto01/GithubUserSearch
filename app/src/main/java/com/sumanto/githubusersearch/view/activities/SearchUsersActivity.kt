@@ -12,7 +12,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
-import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.sumanto.githubusersearch.SearchUsersContract
@@ -22,7 +21,6 @@ import com.sumanto.githubusersearch.interactor.SearchUsersInteractor
 import com.sumanto.githubusersearch.presenter.SearchUsersPresenter
 import com.sumanto.githubusersearch.view.adapters.UsersAdapter
 import com.sumanto.githubusersearch.view.adapters.UsersLoadStateAdapter
-import com.sumanto.githubusersearch.view.viewholder.UserViewHolder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
@@ -165,8 +163,8 @@ class SearchUsersActivity : AppCompatActivity(), SearchUsersContract.View {
         binding.errorTextView.isVisible = false
     }
 
-    override fun setListVisibility(visible: Boolean){
-        binding.list.isVisible = visible
+    override fun setListVisibility(isVisible: Boolean){
+        binding.list.isVisible = isVisible
     }
 
     override fun showUserInfoToast(user: GithubUser?) {

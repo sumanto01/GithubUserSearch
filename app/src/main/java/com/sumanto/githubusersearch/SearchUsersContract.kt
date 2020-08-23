@@ -16,7 +16,7 @@ class SearchUsersContract {
         fun showRetryButton()
         fun hideRetryButton()
         fun hideSoftKeyboard()
-        fun setListVisibility(visible: Boolean)
+        fun setListVisibility(isVisible: Boolean)
         fun setPagingDataUser(pagingData: PagingData<GithubUser>)
         fun showUserInfoToast(user: GithubUser?)
     }

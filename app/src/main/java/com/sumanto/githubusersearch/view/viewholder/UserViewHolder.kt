@@ -1,13 +1,10 @@
 package com.sumanto.githubusersearch.view.viewholder
 
-import android.content.Intent
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sumanto.githubusersearch.R
@@ -16,7 +13,7 @@ import com.sumanto.githubusersearch.data.model.GithubUser
 /**
  * Created by sumanto on 8/16/20.
  */
-class UserViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+class UserViewHolder(view: View, onUserListener: OnUserListener) : RecyclerView.ViewHolder(view) {
     private val avatarIv: ImageView = view.findViewById(R.id.avatar_image_view)
     private val userNameTv: TextView = view.findViewById(R.id.user_name_text_view)
     private val userTypeTv: TextView = view.findViewById(R.id.user_type_text_view)
@@ -26,17 +23,10 @@ class UserViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     init {
         view.apply {
             setOnClickListener {
-                Toast.makeText(
-                    itemView.context,
-                    "Click Github User ${user?.login ?: ""}",
-                    Toast.LENGTH_LONG
-                ).show()
+                onUserListener.onUserClick(user)
             }
             setOnLongClickListener {
-                user?.htmlUrl?.let { url ->
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                    view.context.startActivity(intent)
-                }
+                onUserListener.onUserLongClick(user)
                 true
             }
         }
@@ -64,10 +54,15 @@ class UserViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     }
 
     companion object {
-        fun create(parent: ViewGroup): UserViewHolder {
+        fun create(parent: ViewGroup, onUserListener: OnUserListener): UserViewHolder {
             val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.user_list_item, parent, false)
-            return UserViewHolder(view)
+            return UserViewHolder(view, onUserListener)
         }
+    }
+
+    interface OnUserListener{
+        fun onUserClick(user: GithubUser?)
+        fun onUserLongClick(user: GithubUser?)
     }
 }

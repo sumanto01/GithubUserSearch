@@ -5,34 +5,41 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.KeyEvent
-import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.sumanto.githubusersearch.SearchUsersContract
+import com.sumanto.githubusersearch.data.model.GithubUser
 import com.sumanto.githubusersearch.databinding.ActivitySearchBinding
+import com.sumanto.githubusersearch.interactor.SearchUsersInteractor
+import com.sumanto.githubusersearch.presenter.SearchUsersPresenter
 import com.sumanto.githubusersearch.view.adapters.UsersAdapter
 import com.sumanto.githubusersearch.view.adapters.UsersLoadStateAdapter
-import com.sumanto.githubusersearch.viewmodel.SearchUsersViewModel
+import com.sumanto.githubusersearch.view.viewholder.UserViewHolder
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 /**
  * Created by sumanto on 8/15/20.
  */
+@ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class SearchUsersActivity : AppCompatActivity() {
+class SearchUsersActivity : AppCompatActivity(), SearchUsersContract.View {
 
     private lateinit var binding: ActivitySearchBinding
-    private val viewModel: SearchUsersViewModel by viewModels()
 
-    private val adapter = UsersAdapter()
+    private lateinit var presenter: SearchUsersContract.Presenter
+
+    private lateinit var adapter: UsersAdapter
 
     private var searchJob: Job? = null
 
@@ -43,22 +50,24 @@ class SearchUsersActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
+        val interactor: SearchUsersInteractor by viewModels()
+        presenter = SearchUsersPresenter(this, interactor)
+        adapter = UsersAdapter(presenter)
+
         val query = savedInstanceState?.getString(LAST_SEARCH_QUERY) ?: DEFAULT_QUERY
         initViews(query)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(LAST_SEARCH_QUERY, viewModel.lastQueryValue())
+        outState.putString(LAST_SEARCH_QUERY, presenter.lastQueryValue())
     }
 
     private fun search(query: String) {
         // Cancel the previous coroutine job before creating a new one
         searchJob?.cancel()
         searchJob = lifecycleScope.launch {
-            viewModel.searchUsers(query).collectLatest {
-                adapter.submitData(it)
-            }
+            presenter.searchUsers(query)
         }
     }
 
@@ -120,16 +129,11 @@ class SearchUsersActivity : AppCompatActivity() {
             footer = UsersLoadStateAdapter { adapter.retry() }
         )
         adapter.addLoadStateListener { loadState ->
-            // set views state based on LoadState
-            binding.list.isVisible = loadState.source.refresh is LoadState.NotLoading
-            binding.swipeRefresh.isRefreshing = loadState.source.refresh is LoadState.Loading
-            binding.retryButton.isVisible = loadState.source.refresh is LoadState.Error
-            binding.errorTextView.isVisible = loadState.source.refresh is LoadState.Error
+            presenter.setLoadState(loadState)
         }
     }
 
     private fun updateUsersListFromInput() {
-        hideKeyboardFrom(binding.searchEditText)
         binding.searchEditText.text.trim().let {
             if (it.isNotEmpty()) {
                 search(it.toString())
@@ -137,10 +141,46 @@ class SearchUsersActivity : AppCompatActivity() {
         }
     }
 
-    private fun hideKeyboardFrom(view: View) {
+    override fun hideSoftKeyboard() {
         val imm: InputMethodManager =
-            view.context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
+            this.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(binding.searchEditText.windowToken, 0)
+    }
+
+    override fun showLoading() {
+        binding.swipeRefresh.isRefreshing = true
+    }
+
+    override fun hideLoading() {
+        binding.swipeRefresh.isRefreshing = false
+    }
+
+    override fun showRetryButton() {
+        binding.retryButton.isVisible = true
+        binding.errorTextView.isVisible = true
+    }
+
+    override fun hideRetryButton(){
+        binding.retryButton.isVisible = false
+        binding.errorTextView.isVisible = false
+    }
+
+    override fun setListVisibility(visible: Boolean){
+        binding.list.isVisible = visible
+    }
+
+    override fun showUserInfoToast(user: GithubUser?) {
+        Toast.makeText(
+            this,
+            "Click Github User ${user?.login ?: ""}",
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
+    override fun setPagingDataUser(pagingData: PagingData<GithubUser>) {
+        lifecycleScope.launch {
+            adapter.submitData(pagingData)
+        }
     }
 
     companion object {

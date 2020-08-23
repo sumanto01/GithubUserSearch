@@ -11,7 +11,7 @@ Technology used :
 
 Architecture pattern:
 - MVVM -> branch: master
-- VIPER -> (in progress)
+- VIPER -> branch: viper
 
 Tests:
 - Unit Tests

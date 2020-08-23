@@ -10,10 +10,10 @@ import com.sumanto.githubusersearch.view.viewholder.UserViewHolder
 /**
  * Created by sumanto on 8/16/20.
  */
-class UsersAdapter : PagingDataAdapter<GithubUser, RecyclerView.ViewHolder>(REPO_COMPARATOR) {
+class UsersAdapter(private var onUserListener: UserViewHolder.OnUserListener) : PagingDataAdapter<GithubUser, RecyclerView.ViewHolder>(REPO_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-        UserViewHolder.create(parent)
+        UserViewHolder.create(parent, onUserListener)
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val userItem = getItem(position)

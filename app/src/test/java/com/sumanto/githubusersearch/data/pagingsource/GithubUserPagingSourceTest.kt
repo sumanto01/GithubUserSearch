@@ -1,38 +1,24 @@
 package com.sumanto.githubusersearch.data.pagingsource
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.paging.ItemKeyedDataSource
-import androidx.paging.PagingSource
 import com.sumanto.githubusersearch.data.model.GithubUser
 import com.sumanto.githubusersearch.data.model.UserSearchResponse
 import com.sumanto.githubusersearch.data.network.GithubService
-import com.sumanto.githubusersearch.data.repositories.GithubRepositoryImpl
 import fr.xgouchet.elmyr.junit4.ForgeRule
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.setMain
 import org.hamcrest.CoreMatchers.equalTo
-import org.junit.Test
-
-import org.junit.Assert.*
+import org.junit.Assert.assertThat
 import org.junit.Before
 import org.junit.Rule
-import org.junit.rules.TestRule
-import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchers.anyObject
+import org.junit.Test
 
 /**
  * Created by sumanto on 8/19/20.
  */
 class GithubUserPagingSourceTest {
-    @get:Rule
-    var rule: TestRule = InstantTaskExecutorRule()
-
     @Rule
     @JvmField
     val forger = ForgeRule()
